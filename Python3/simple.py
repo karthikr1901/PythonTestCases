@@ -13,3 +13,44 @@ You can use the csv modules "reader" method to get data in such format.
 Another useful method is next() - to get the next line from the iterator.
 You should only change the parse_file function.
 """
+import csv
+import os
+
+DATADIR = ""
+DATAFILE = "745090.csv"
+
+
+def parse_file(datafile):
+    name = ""
+    counter = 0
+    data = []
+    with open(datafile,'r') as f:
+        name1 = f.readline().split(",")
+        name = str(name1[1])
+        name = name.replace('"','')
+        print(name)
+
+        spamreader = csv.reader(f, delimiter=',', quotechar='|')
+        for row in spamreader:
+            if(counter>0):
+                data.append(row)
+            counter = counter+1
+
+        print(data[0][1])
+
+    # Do not change the line below
+    return (name, data)
+
+
+def test():
+    datafile = os.path.join(DATADIR, DATAFILE)
+    name, data = parse_file(datafile)
+
+    assert name == "MOUNTAIN VIEW MOFFETT FLD NAS"
+    assert data[0][1] == "01:00"
+    assert data[2][0] == "01/01/2005"
+    assert data[2][5] == "2"
+
+
+if __name__ == "__main__":
+    test()
